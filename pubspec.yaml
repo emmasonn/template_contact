@@ -39,6 +39,7 @@ dependencies:
   simple_animations: ^4.0.1
   shared_preferences: ^2.0.13
   riverpod: ^1.0.3
+  go_router: ^4.2.8
 
 
 dev_dependencies:

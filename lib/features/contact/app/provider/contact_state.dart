@@ -1,23 +1,16 @@
-import 'package:flutter_app/features/profile/domain/view_profile.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_app/features/contact/domain/entities/contact.dart';
 
-class ProfileState {}
-
-//profile loading state
-class ProfileLoading {}
-
-//profile loaded
-class ProfileLoaded {
-  final Profile profile;
-  const ProfileLoaded({
-    required this.profile,
-  });
+class ContactsState extends Equatable {
+  @override
+  List<Object?> get props => [];
 }
 
-//profile error
-class ProfileError {
-  final Error failure;
-  const ProfileError({
-    required this.failure,
-  });
+class ContactsInitial extends ContactsState {}
+
+class ContactsData extends ContactsState {
+  final List<Contact>? contacts;
+  final int? tab;
+
+  ContactsData({this.contacts, this.tab});
 }
- 

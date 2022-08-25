@@ -1,38 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/core/navigation/app_route_parser.dart';
-import 'package:flutter_app/core/navigation/app_router.dart';
+import 'package:flutter_app/core/navigation/router.dart';
+import 'package:flutter_app/features/contact/app/provider/contact_manager.dart';
+import 'package:flutter_app/injection_container.dart' as di;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart' as pr;
+import 'core/resources/app_theme.dart';
+import 'injection_container.dart';
 
-void main() {
-  runApp(const AppTemplate());
+// late StateNotifierProvider<ContactManager,ContactsState> contactManagerProvider;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //awaiting dependency injection processing
+  //using Get_It package
+  await di.init();
+
+  // //initialize managers;
+  // contactManagerProvider = StateNotifierProvider<ContactManager,ContactsState>(
+  //       (ref) => sl<ContactManager>(),
+  // );
+
+  runApp(
+    const ProviderScope(
+      child: AppTemplate(),
+    ),
+  );
 }
 
-class AppTemplate extends StatefulWidget {
+class AppTemplate extends ConsumerWidget {
   const AppTemplate({Key? key}) : super(key: key);
 
   @override
-  State<AppTemplate> createState() => _AppTemplateState();
-}
-
-class _AppTemplateState extends State<AppTemplate> {
-  final routeParser = AppRouteParser();
-  final _appRouter = AppRouter();
-
-  @override
-  Widget build(BuildContext context) {
-    //decide on which theme to use on the app whether dark or light.
+  Widget build(BuildContext context, WidgetRef ref) {
     // ThemeData themeData;
-    // if (themeTemp) {
-    //   themeData = AppTheme.dark();
-    // } else {
-    //   themeData = AppTheme.light();
-    // }
+    //   // if (themeTemp) {
+    //   //   themeData = AppTheme.dark();
+    //   // } else {
+    //   //   themeData = AppTheme.light();
+    //   // }
 
-    return MaterialApp.router(
-      title: 'AppTemplate',
-      routeInformationParser: routeParser,
-      routerDelegate:
-          _appRouter, //helps to construct the stack of pages that represents your app state.
+    return pr.MultiProvider(
+      providers: [
+        pr.ChangeNotifierProvider.value(
+          value: sl<ContactManager>(),
+        )
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'AppTemplate',
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        routeInformationParser: goRouter.routeInformationParser,
+        routeInformationProvider: goRouter.routeInformationProvider,
+        routerDelegate: goRouter
+            .routerDelegate, //helps to construct the stack of pages that represents your app state.
+      ),
     );
-  } 
-} 
- 
+  }
+}

@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart' as pr;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/widgets/Custom_search_delegate.dart';
+import '../../../../core/widgets/custom_search_delegate.dart';
 import '../../../../core/widgets/custom_page.dart';
 
 enum Menu { upload, share }
